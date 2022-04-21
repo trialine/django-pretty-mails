@@ -101,7 +101,7 @@ def convert_to_list(variable):
     return variable
 
 
-def get_mail_body(template_name, variables):
+def get_mail_body(template_name, variables={}):
     body_html = render_to_string(f"django_pretty_mails/{template_name}.html", variables)
     try:
         body_text = render_to_string(f"django_pretty_mails/{template_name}.txt", variables)
@@ -110,7 +110,7 @@ def get_mail_body(template_name, variables):
     return body_html, body_text
 
 
-def create_email_message(body_text, body_html, subject, mails, from_email, attachments=[], attachments_content=[],
+def create_email_message(body_text, body_html, subject, mails, from_email=None, attachments=[], attachments_content=[],
                          reply_to_mail=None, cc=None, bcc=None):
 
     email = EmailMultiAlternatives(
