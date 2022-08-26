@@ -16,6 +16,10 @@ class AppSettings(object):
     def MAIL_TYPES(self):
         return self._setting('MAIL_TYPES', {})
 
+    @property
+    def SAVE_TO_LOG(self):
+        return self._setting('MAIL_SAVE_TO_LOG', False)
+
 
 # Ugly? Guido recommends this himself ...
 # http://mail.python.org/pipermail/python-ideas/2012-May/014969.html

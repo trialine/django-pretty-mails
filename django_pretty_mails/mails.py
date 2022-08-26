@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _, ugettext as __
 
-from .app_settings import MAIL_TYPES
+from .app_settings import MAIL_TYPES, SAVE_TO_LOG
 
 
 def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[], attachments_content=[],
@@ -61,6 +61,10 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
         convert_to_list(bcc or mailconf.get('bcc', None))
     )
 
+    if SAVE_TO_LOG:
+        from .models import Log
+        Log.create(mail_type, email)
+
     email.send()
 
     if 'admin_mails' in mailconf or admin_mails:
@@ -91,6 +95,9 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
             attachments_content,
             admin_reply_to
         )
+
+        if SAVE_TO_LOG:
+            Log.create(f'{mail_type}_admin', email)
 
         email.send()
 
