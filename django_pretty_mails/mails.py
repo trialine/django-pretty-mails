@@ -44,7 +44,7 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
         else:
             raise Exception('No mail to send to!')
 
-    f'{__(mailconf.get("subject_prefix", ""))}{subject or _(mailconf["subject"])}'
+    subject = f'{__(mailconf.get("subject_prefix", ""))}{subject or _(mailconf["subject"])}'
 
     from_email = mailconf.get('from_email', settings.DEFAULT_FROM_EMAIL)
 
