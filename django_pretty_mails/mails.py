@@ -69,11 +69,11 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
 
     if 'admin_mails' in mailconf or admin_mails:
         try:
+            variables.update({
+                'body': body_html
+            })
             body_html, body_text = get_mail_body(
-                '{}_admin'.format(mail_type), {
-                    **variables,
-                    'body': body_html
-                })
+                '{}_admin'.format(mail_type), variables=variables)
         except Exception:
             pass
 
