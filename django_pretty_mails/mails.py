@@ -44,7 +44,7 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
         else:
             raise Exception('No mail to send to!')
 
-    subject = f'{__(mailconf.get("subject_prefix", ""))}{subject or _(mailconf["subject"])}'
+    subject = '{}{}'.format(__(mailconf.get("subject_prefix", "")), subject or _(mailconf["subject"]))
 
     from_email = mailconf.get('from_email', settings.DEFAULT_FROM_EMAIL)
 
@@ -70,14 +70,14 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
     if 'admin_mails' in mailconf or admin_mails:
         try:
             body_html, body_text = get_mail_body(
-                f'{mail_type}_admin', {
+                '{}_admin'.format(mail_type), {
                     **variables,
                     'body': body_html
                 })
         except Exception:
             pass
 
-        subject = f"{mailconf.get('admin_subject_prefix', '')}{subject}"
+        subject = "{}{}".format(mailconf.get('admin_subject_prefix', ''), subject)
 
         admin_mails = admin_mails or mailconf['admin_mails']
 
@@ -97,7 +97,7 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
         )
 
         if SAVE_TO_LOG:
-            Log.create(f'{mail_type}_admin', email)
+            Log.create('{}_admin'.format(mail_type), email)
 
         email.send()
 
@@ -109,9 +109,9 @@ def convert_to_list(variable):
 
 
 def get_mail_body(template_name, variables={}):
-    body_html = render_to_string(f"django_pretty_mails/{template_name}.html", variables)
+    body_html = render_to_string("django_pretty_mails/{}.html".format(template_name), variables)
     try:
-        body_text = render_to_string(f"django_pretty_mails/{template_name}.txt", variables)
+        body_text = render_to_string("django_pretty_mails/{}.txt".format(template_name), variables)
     except TemplateDoesNotExist:
         body_text = strip_tags(body_html)
     return body_html, body_text
