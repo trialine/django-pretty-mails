@@ -65,7 +65,7 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
         from .models import Log
         Log.create(mail_type, email)
 
-    email.send()
+    result = email.send()
 
     if 'admin_mails' in mailconf or admin_mails:
         try:
@@ -100,6 +100,9 @@ def send_email(mail_type, variables={}, subject=None, mails=None, attachments=[]
             Log.create(f'{mail_type}_admin', email)
 
         email.send()
+
+    # have to return result of customer mail sending
+    return result
 
 
 def convert_to_list(variable):
