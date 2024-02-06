@@ -3,7 +3,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _, ugettext as __
+from django.utils.translation import gettext_lazy as _, gettext as __
 
 from .app_settings import MAIL_TYPES, SAVE_TO_LOG
 
